@@ -14,10 +14,16 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "pineda",
+    "password": "MNv9Vz2R5VErg7qPpgqzLrOtPQZC8Z7z",
+    "database": "gestionproyectofapi",
+    "host": "dpg-d39abj95pdvs739551og-a",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }
