@@ -1,4 +1,5 @@
 const db = require('../../../models'); // Asegúrate de que esta ruta sea correcta
+const bcrypt = require('bcrypt');
 
 // Obtener todos los usuarios, incluyendo sus roles y especialidades
 exports.getAllUsers = async () => {
@@ -43,4 +44,15 @@ exports.deleteUser = async (id) => {
     }
     await user.destroy();
     return true;
+};
+
+// ✅ Nueva función: login por nombre de usuario
+exports.loginUser = async (name, password) => {
+    const user = await db.User.findOne({ where: { name } });
+    if (!user) return null;
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return false;
+
+    return user;
 };

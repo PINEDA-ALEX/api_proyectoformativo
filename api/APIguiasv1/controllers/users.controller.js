@@ -58,3 +58,23 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+// ✅ Nueva función: login por nombre de usuario
+exports.loginUser = async (req, res) => {
+    const { name, password } = req.body;
+    try {
+        const user = await usersService.loginUser(name, password);
+        if (user === null) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user === false) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+        res.status(200).json({
+            message: 'Login successful',
+            name: user.name,
+            id: user.id
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
