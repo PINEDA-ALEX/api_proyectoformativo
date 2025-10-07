@@ -47,7 +47,6 @@ const learningmomentsRoutes = require('./api/APIguiasv1/routes/learningmoments.r
 const resultsRoutes = require('./api/APIguiasv1/routes/results.routes');
 const teachingtechniquesRoutes = require('./api/APIguiasv1/routes/teachingtechniques.routes');
 const generatedmomentsRoutes = require('./api/APIguiasv1/routes/generatedmoments.routes');
-const authRoutes = require('./api/APIguiasv1/routes/auth.routes');
 
 
 // Conecta cada archivo de ruta a un prefijo de URL
@@ -61,8 +60,7 @@ app.use('/api/APIguiasv1/learningmoments', learningmomentsRoutes);
 app.use('/api/APIguiasv1/results', resultsRoutes);
 app.use('/api/APIguiasv1/teachingtechniques', teachingtechniquesRoutes);
 app.use('/api/APIguiasv1/generatedmoments', generatedmomentsRoutes);
-app.use('/api/APIguiasv1/auth', authRoutes);
-  
+
 
 
 // --- Endpoints de prueba ---
