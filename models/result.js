@@ -19,7 +19,8 @@ static associate(models) {
 }
   }
   Result.init({
-    fkidCompetence: DataTypes.INTEGER
+    fkidCompetence: DataTypes.INTEGER,
+    description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Result',

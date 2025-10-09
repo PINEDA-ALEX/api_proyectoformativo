@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      description: {
+        type: Sequelize.STRING
+      },
       fkidCompetence: {
         type: Sequelize.INTEGER,
         references:{
