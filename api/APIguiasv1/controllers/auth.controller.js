@@ -17,7 +17,13 @@ exports.loginUser = async (req, res) => {
     res.status(200).json({
       id: user.id,
       name: user.name,
-      message: 'Login successful'
+      email: user.email,
+      phone: user.phone,
+      fkidRole: user.fkidRole,        // ✅ Importante
+      fkidSpecialty: user.fkidSpecialty,
+      Rol: user.Rol,                   // ✅ Importante
+      Specialty: user.Specialty,
+      message: 'Login successful'
     });
 
   } catch (error) {
