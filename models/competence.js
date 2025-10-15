@@ -21,7 +21,8 @@ static associate(models) {
   }
   Competence.init({
     name: DataTypes.STRING,
-    fkidTrainingProgram: DataTypes.INTEGER
+    fkidTrainingProgram: DataTypes.INTEGER,
+    description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Competence',

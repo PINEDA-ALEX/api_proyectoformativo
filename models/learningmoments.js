@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { DESCRIBE } = require('sequelize/lib/query-types');
 module.exports = (sequelize, DataTypes) => {
   class learningmoments extends Model {
     /**
@@ -27,7 +28,9 @@ static associate(models) {
 // ...
   }
   learningmoments.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    description: DataTypes.STRING
+    
   }, {
     sequelize,
     modelName: 'learningmoments',

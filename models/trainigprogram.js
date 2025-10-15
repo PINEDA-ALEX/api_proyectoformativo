@@ -21,7 +21,8 @@ static associate(models) {
   }
   Trainigprogram.init({
     name: DataTypes.STRING,
-    trainingprogramcode: DataTypes.STRING
+    trainingprogramcode: DataTypes.STRING,
+    description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Trainigprogram',
