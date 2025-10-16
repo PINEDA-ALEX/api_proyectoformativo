@@ -8,13 +8,16 @@ router.get('/', learningmomentsController.getAllLearningmoments);
 // Obtener las técnicas didácticas de un momento específico (DEBE IR ANTES de /:id)
 router.get('/:id/teachingTechniques', learningmomentsController.getLearningmomentTechniques);
 
+// NUEVA RUTA: Actualizar solo las técnicas de un momento (DEBE IR ANTES de /:id)
+router.put('/:id/techniques', learningmomentsController.updateLearningmomentTechniques);
+
 // Obtener un momento de aprendizaje por ID
 router.get('/:id', learningmomentsController.getLearningmomentById);
 
 // Crear un nuevo momento de aprendizaje
 router.post('/', learningmomentsController.createLearningmoment);
 
-// Actualizar un momento de aprendizaje por ID
+// Actualizar un momento de aprendizaje por ID (incluye técnicas si vienen en body)
 router.put('/:id', learningmomentsController.updateLearningmoment);
 
 // Eliminar un momento de aprendizaje por ID

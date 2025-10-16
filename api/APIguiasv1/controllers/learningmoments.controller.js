@@ -58,6 +58,33 @@ exports.updateLearningmoment = async (req, res) => {
     }
 };
 
+// NUEVO: Actualizar solo las técnicas de un momento
+exports.updateLearningmomentTechniques = async (req, res) => {
+    try {
+        const { techniquesIds, tecnicasDidacticas, teachingtechniques } = req.body;
+        const techniques = techniquesIds || tecnicasDidacticas || teachingtechniques;
+
+        if (!techniques || !Array.isArray(techniques)) {
+            return res.status(400).json({ 
+                message: 'Se requiere un array de IDs de técnicas (techniquesIds, tecnicasDidacticas o teachingtechniques)' 
+            });
+        }
+
+        const updatedLearningmoment = await learningmomentsService.updateLearningmomentTechniques(
+            req.params.id, 
+            techniques
+        );
+
+        if (!updatedLearningmoment) {
+            return res.status(404).json({ message: 'Learning moment not found' });
+        }
+
+        res.status(200).json(updatedLearningmoment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Eliminar un momento de aprendizaje por ID
 exports.deleteLearningmoment = async (req, res) => {
     try {
