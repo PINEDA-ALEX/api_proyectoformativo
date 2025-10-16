@@ -10,13 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     // result.js
-static associate(models) {
-  // Relación con Competence (N resultados → 1 competencia)
-  this.belongsTo(models.Competence, { foreignKey: 'fkidCompetence' });
+    static associate(models) {
+      // Relación con Competence (N resultados → 1 competencia)
+      this.belongsTo(models.Competence, { foreignKey: 'fkidCompetence' });
 
-  // Relación N:M con Guide a través de la tabla de unión result_guide
-  this.belongsToMany(models.Guide, { through: 'result_guide', foreignKey: 'fkidResult' });
-}
+      // Relación N:M con Guide a través de la tabla de unión result_guide
+      this.belongsToMany(models.Guide, {
+        through: 'result_guide',
+        foreignKey: 'fkidResult',
+        otherKey: 'fkidGuide'
+      });
+
+    }
   }
   Result.init({
     fkidCompetence: DataTypes.INTEGER,

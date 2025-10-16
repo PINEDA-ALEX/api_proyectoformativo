@@ -10,21 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-  // Relación con User (N guías → 1 usuario)
-  this.belongsTo(models.User, { foreignKey: 'fkidUser' });
+      // Relación con User (N guías → 1 usuario)
+      this.belongsTo(models.User, { foreignKey: 'fkidUser' });
 
-  // Relación con Trainingprogram (N guías → 1 programa de formación)
-  this.belongsTo(models.Trainigprogram, { foreignKey: 'fkidTrainingProgram' });
+      // Relación con Trainingprogram (N guías → 1 programa de formación)
+      this.belongsTo(models.Trainigprogram, { foreignKey: 'fkidTrainingProgram' });
 
-  // Relación con Specialty (N guías → 1 especialidad)
-  this.belongsTo(models.Specialty, { foreignKey: 'fkidSpecialty' });
+      // Relación con Specialty (N guías → 1 especialidad)
+      this.belongsTo(models.Specialty, { foreignKey: 'fkidSpecialty' });
 
-  // Relación N:M con Result a través de la tabla de unión result_guide
-  this.belongsToMany(models.Result, { through: 'result_guide', foreignKey: 'fkidGuide' });
+      // Relación N:M con Result a través de la tabla de unión result_guide
+      this.belongsToMany(models.Result, {
+        through: 'result_guide',
+        foreignKey: 'fkidGuide',
+        otherKey: 'fkidResult'
+      });
 
-  // Relación con Generatedmoment (1 guía → muchos momentos generados)
-  this.hasMany(models.Generatedmoment, { foreignKey: 'fkidGuide' });
-}
+
+      // Relación con Generatedmoment (1 guía → muchos momentos generados)
+      this.hasMany(models.Generatedmoment, { foreignKey: 'fkidGuide' });
+    }
   }
   Guide.init({
     name: DataTypes.STRING,
@@ -49,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     productEvidence: DataTypes.TEXT,
     criterion: DataTypes.TEXT,
     evaluationTechniques: DataTypes.TEXT,
-    transferactivity: DataTypes.TEXT, 
+    transferactivity: DataTypes.TEXT,
     //campos nuevos
     fkidUser: DataTypes.INTEGER,
     fkidTrainingProgram: DataTypes.INTEGER,

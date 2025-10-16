@@ -12,7 +12,18 @@ exports.getGuideById = async (id) => {
 
 // Crear una nueva guía
 exports.createGuide = async (guideData) => {
-    return db.Guide.create(guideData);
+  const { fkidResult, ...guideInfo } = guideData; // Separa los resultados del resto de la info
+
+  // 1️⃣ Crear la guía principal
+  const newGuide = await db.Guide.create(guideInfo);
+
+  // 2️⃣ Si vienen resultados seleccionados, crear las relaciones
+  if (fkidResult && Array.isArray(fkidResult)) {
+    await newGuide.setResults(fkidResult); // Esto crea los registros en 'result_guide'
+  }
+
+  // 3️⃣ Retornar la guía creada con las relaciones
+  return await db.Guide.findByPk(newGuide.id, { include: db.Result });
 };
 
 // Actualizar una guía existente
