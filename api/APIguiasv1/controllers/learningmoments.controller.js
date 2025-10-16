@@ -36,8 +36,9 @@ exports.getLearningmomentTechniques = async (req, res) => {
 // Crear un nuevo momento de aprendizaje
 exports.createLearningmoment = async (req, res) => {
     try {
-        const { teachingtechniques, ...learningMomentData } = req.body;
-        const newLearningmoment = await learningmomentsService.createLearningmoment(learningMomentData, teachingtechniques);
+        const { tecnicasDidacticas, teachingtechniques, ...learningMomentData } = req.body;
+        const techniques = tecnicasDidacticas || teachingtechniques || [];
+        const newLearningmoment = await learningmomentsService.createLearningmoment(learningMomentData, techniques);
         res.status(201).json(newLearningmoment);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -31,25 +31,25 @@ exports.getLearningmomentTechniques = async (id) => {
 exports.createLearningmoment = async (learningMomentData, teachingtechniques) => {
     const transaction = await db.sequelize.transaction();
     try {
-        const learningmoment = await db.learningmoments.create(learningMomentData, { transaction });
+        console.log('Creando momento con datos:', learningMomentData);
+        console.log('Técnicas recibidas:', teachingtechniques);
 
-        if (teachingtechniques && teachingtechniques.length > 0) {
-            // Asegúrate de que teachingtechniques sea un array de números
-            const techniqueIds = Array.isArray(teachingtechniques) ? teachingtechniques : [teachingtechniques];
-            await learningmoment.addTeachingtechniques(techniqueIds, { transaction });
+        const learningmoment = await db.learningmoments.create(learningMomentData, { transaction });
+        console.log('Momento creado con ID:', learningmoment.id);
+
+        if (teachingtechniques && Array.isArray(teachingtechniques) && teachingtechniques.length > 0) {
+            console.log('Asociando técnicas:', teachingtechniques);
+            await learningmoment.addTeachingtechniques(teachingtechniques, { transaction });
+            console.log('Técnicas asociadas exitosamente');
         }
 
         await transaction.commit();
+        console.log('Transacción completada');
         
-        // Retorna el momento con las técnicas asociadas
-        return db.learningmoments.findByPk(learningmoment.id, {
-            include: [{
-                model: db.Teachingtechniques,
-                through: { attributes: [] },
-                as: 'teachingtechniques'
-            }]
-        });
+        // Retorna el momento sin incluir las relaciones para evitar problemas
+        return learningmoment;
     } catch (error) {
+        console.error('Error en createLearningmoment:', error);
         await transaction.rollback();
         throw error;
     }
