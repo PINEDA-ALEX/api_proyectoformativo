@@ -7,7 +7,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: 'learningMoments',
+          model: 'learningmoments',
           key: 'id'
         },
         onUpdate: 'CASCADE',
