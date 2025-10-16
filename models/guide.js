@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     updateDate: DataTypes.DATE,
     changeReason: DataTypes.STRING,
     //aca grego los nevos campos
-
     projectPhase: DataTypes.STRING,
     projectActivity: DataTypes.STRING,
     duration: DataTypes.STRING,
@@ -50,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
     productEvidence: DataTypes.TEXT,
     criterion: DataTypes.TEXT,
     evaluationTechniques: DataTypes.TEXT,
-
-
+    transferactivity: DataTypes.TEXT, 
+    //campos nuevos
     fkidUser: DataTypes.INTEGER,
     fkidTrainingProgram: DataTypes.INTEGER,
     fkidSpecialty: DataTypes.INTEGER,

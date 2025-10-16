@@ -13,7 +13,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(500)
+
       },
       createdAt: {
         allowNull: false,

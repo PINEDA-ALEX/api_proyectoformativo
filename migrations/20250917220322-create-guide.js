@@ -73,7 +73,9 @@ module.exports = {
       evaluationTechniques: {
         type: Sequelize.TEXT
       },
-
+      transferactivity:{
+        type: Sequelize.TEXT
+      },
       //aca terminanuevos campos
       fkidUser: {
         type: Sequelize.INTEGER,

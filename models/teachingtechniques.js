@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Teachingtechniques.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING(500)
   }, {
     sequelize,
     modelName: 'Teachingtechniques',
