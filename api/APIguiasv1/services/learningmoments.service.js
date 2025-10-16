@@ -34,11 +34,21 @@ exports.createLearningmoment = async (learningMomentData, teachingtechniques) =>
         const learningmoment = await db.learningmoments.create(learningMomentData, { transaction });
 
         if (teachingtechniques && teachingtechniques.length > 0) {
-            await learningmoment.addTeachingtechniques(teachingtechniques, { transaction });
+            // Asegúrate de que teachingtechniques sea un array de números
+            const techniqueIds = Array.isArray(teachingtechniques) ? teachingtechniques : [teachingtechniques];
+            await learningmoment.addTeachingtechniques(techniqueIds, { transaction });
         }
 
         await transaction.commit();
-        return learningmoment;
+        
+        // Retorna el momento con las técnicas asociadas
+        return db.learningmoments.findByPk(learningmoment.id, {
+            include: [{
+                model: db.Teachingtechniques,
+                through: { attributes: [] },
+                as: 'teachingtechniques'
+            }]
+        });
     } catch (error) {
         await transaction.rollback();
         throw error;
