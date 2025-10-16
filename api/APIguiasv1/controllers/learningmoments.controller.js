@@ -23,6 +23,16 @@ exports.getLearningmomentById = async (req, res) => {
     }
 };
 
+// Obtener las técnicas didácticas de un momento específico
+exports.getLearningmomentTechniques = async (req, res) => {
+    try {
+        const techniques = await learningmomentsService.getLearningmomentTechniques(req.params.id);
+        res.status(200).json(techniques);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Crear un nuevo momento de aprendizaje
 exports.createLearningmoment = async (req, res) => {
     try {

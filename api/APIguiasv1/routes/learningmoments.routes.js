@@ -5,6 +5,9 @@ const learningmomentsController = require('../controllers/learningmoments.contro
 // Obtener todos los momentos de aprendizaje
 router.get('/', learningmomentsController.getAllLearningmoments);
 
+// Obtener las técnicas didácticas de un momento específico (DEBE IR ANTES de /:id)
+router.get('/:id/teachingTechniques', learningmomentsController.getLearningmomentTechniques);
+
 // Obtener un momento de aprendizaje por ID
 router.get('/:id', learningmomentsController.getLearningmomentById);
 

@@ -10,6 +10,23 @@ exports.getLearningmomentById = async (id) => {
     return db.learningmoments.findByPk(id);
 };
 
+// Obtener las técnicas didácticas de un momento específico
+exports.getLearningmomentTechniques = async (id) => {
+    const learningMoment = await db.learningmoments.findByPk(id, {
+        include: [{
+            model: db.Teachingtechniques,
+            through: { attributes: [] },
+            as: 'teachingtechniques'
+        }]
+    });
+
+    if (!learningMoment) {
+        throw new Error('Learning moment not found');
+    }
+
+    return learningMoment.teachingtechniques || [];
+};
+
 // Crear un nuevo momento de aprendizaje
 exports.createLearningmoment = async (learningMomentData, teachingtechniques) => {
     const transaction = await db.sequelize.transaction();
