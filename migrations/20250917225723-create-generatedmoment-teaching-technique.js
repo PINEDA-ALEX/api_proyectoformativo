@@ -7,7 +7,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: 'generatedMoments', // Asegúrate de que este es el nombre de la tabla de destino
+          model: 'Generatedmoments', // Asegúrate de que este es el nombre de la tabla de destino
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: 'teachingTechniques', // Asegúrate de que este es el nombre de la tabla de destino
+          model: 'Teachingtechniques', // Asegúrate de que este es el nombre de la tabla de destino
           key: 'id'
         },
         onUpdate: 'CASCADE',
