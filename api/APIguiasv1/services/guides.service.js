@@ -2,12 +2,29 @@ const db = require('../../../models');
 
 // Obtener todas las guías
 exports.getAllGuides = async () => {
-    return db.Guide.findAll();
+  return await Guide.findAll({
+    include: [
+      {
+        model: Result,
+        as: 'learningResults',
+        through: { attributes: [] },
+      },
+    ],
+  });
 };
+
 
 // Obtener una guía por ID
 exports.getGuideById = async (id) => {
-    return db.Guide.findByPk(id);
+  return await Guide.findByPk(id, {
+    include: [
+      {
+        model: Result,
+        as: 'learningResults', // 👈 Debe coincidir con el alias del modelo
+        through: { attributes: [] },
+      },
+    ],
+  });
 };
 
 // Crear una nueva guía

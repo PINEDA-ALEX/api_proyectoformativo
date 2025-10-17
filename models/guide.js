@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       // Relación N:M con Result a través de la tabla de unión result_guide
       this.belongsToMany(models.Result, {
         through: 'result_guide',
+        as: 'learningResults', // 👈 alias para incluir correctamente
         foreignKey: 'fkidGuide',
         otherKey: 'fkidResult'
       });
