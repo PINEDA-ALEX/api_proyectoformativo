@@ -1,64 +1,124 @@
-const db = require('../../../models');
+// guides.service.js
+const db = require('../../../models'); // db.Guide, db.Result, etc.
 
-// Obtener todas las guías
+const includeLearningResults = [
+  {
+    model: db.Result,
+    as: 'learningResults', // debe coincidir con el alias en Guide.belongsToMany(...)
+    through: { attributes: [] },
+  },
+];
+
+// Obtener todas las guías (incluye solo los resultados asociados)
 exports.getAllGuides = async () => {
-  return await Guide.findAll({
+  return await db.Guide.findAll({
     include: [
-      {
-        model: Result,
-        as: 'learningResults',
-        through: { attributes: [] },
-      },
+      ...includeLearningResults,
+      // si quieres incluir otros modelos (User, Specialty, Trainigprogram), agrégalos aquí
     ],
   });
 };
 
-
-// Obtener una guía por ID
+// Obtener una guía por ID (incluye solo los resultados asociados)
 exports.getGuideById = async (id) => {
-  return await Guide.findByPk(id, {
+  return await db.Guide.findByPk(id, {
     include: [
-      {
-        model: Result,
-        as: 'learningResults', // 👈 Debe coincidir con el alias del modelo
-        through: { attributes: [] },
-      },
+      ...includeLearningResults,
+      // otros includes opcionales
     ],
   });
 };
 
-// Crear una nueva guía
-exports.createGuide = async (guideData) => {
-  const { fkidResult, ...guideInfo } = guideData; // Separa los resultados del resto de la info
+// Crear una nueva guía. Firma: createGuide(guideData, results)
+// results: array de IDs (opcional)
+exports.createGuide = async (guideData, results = []) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    // guideData contiene campos de la guía (sin results)
+    const newGuide = await db.Guide.create(guideData, { transaction });
 
-  // 1️⃣ Crear la guía principal
-  const newGuide = await db.Guide.create(guideInfo);
+    if (results && Array.isArray(results) && results.length > 0) {
+      // Uso del setter con el alias -> setLearningResults
+      // Sequelize generará setLearningResults si usaste as: 'learningResults'
+      await newGuide.setLearningResults(results, { transaction });
+    }
 
-  // 2️⃣ Si vienen resultados seleccionados, crear las relaciones
-  if (fkidResult && Array.isArray(fkidResult)) {
-    await newGuide.setResults(fkidResult); // Esto crea los registros en 'result_guide'
+    await transaction.commit();
+
+    // devolver la guía creada con los resultados asociados (si los hay)
+    return await db.Guide.findByPk(newGuide.id, {
+      include: includeLearningResults,
+    });
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
   }
-
-  // 3️⃣ Retornar la guía creada con las relaciones
-  return await db.Guide.findByPk(newGuide.id, { include: db.Result });
 };
 
-// Actualizar una guía existente
+// Actualizar una guía completa. Si vienen resultados en el body (learningResults / fkidResult / resultadosAprendizaje), los actualiza también.
 exports.updateGuide = async (id, guideData) => {
-    const guide = await db.Guide.findByPk(id);
+  const transaction = await db.sequelize.transaction();
+  try {
+    const guide = await db.Guide.findByPk(id, { transaction });
     if (!guide) {
-        return null;
+      await transaction.rollback();
+      return null;
     }
-    await guide.update(guideData);
-    return guide;
+
+    // Extraer potenciales resultados del body sin mutar guideData
+    const { learningResults, resultadosAprendizaje, fkidResult, ...rest } = guideData;
+    const resultsArray = learningResults || resultadosAprendizaje || fkidResult || null;
+
+    // Actualizar campos de la guía
+    await guide.update(rest, { transaction });
+
+    // Si se envió un array de resultados, actualizar la relación
+    if (resultsArray !== null) {
+      if (!Array.isArray(resultsArray)) {
+        await transaction.rollback();
+        throw new Error('Los resultados deben ser un array de IDs');
+      }
+      await guide.setLearningResults(resultsArray, { transaction });
+    }
+
+    await transaction.commit();
+
+    return await db.Guide.findByPk(id, { include: includeLearningResults });
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+// Actualizar solo los resultados de aprendizaje de una guía (ruta específica)
+exports.updateGuideResults = async (id, results) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const guide = await db.Guide.findByPk(id, { transaction });
+    if (!guide) {
+      await transaction.rollback();
+      return null;
+    }
+
+    if (!Array.isArray(results)) {
+      await transaction.rollback();
+      throw new Error('Se requiere un array de IDs de resultados');
+    }
+
+    await guide.setLearningResults(results, { transaction });
+    await transaction.commit();
+
+    return await db.Guide.findByPk(id, { include: includeLearningResults });
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 // Eliminar una guía
 exports.deleteGuide = async (id) => {
-    const guide = await db.Guide.findByPk(id);
-    if (!guide) {
-        return false;
-    }
-    await guide.destroy();
-    return true;
+  const guide = await db.Guide.findByPk(id);
+  if (!guide) return false;
+  await guide.destroy();
+  return true;
 };
