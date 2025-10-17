@@ -29,7 +29,7 @@ static associate(models) {
   }
   learningmoments.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING(1000)
+    description: DataTypes.TEXT
     
   }, {
     sequelize,
