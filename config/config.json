@@ -15,8 +15,8 @@
   },
   "production": {
     "username": "pineda",
-    "password": "chYcW9TVI1uHGZ0avyfnM7IDPGJBQ8Je",
-    "database": "db_api_proyecto_formativo",
+    "password": "aJVWls1BmbYQPWvIxOnDNSOxTSA7awgI",
+    "database": "db_api_rest_2s92",
     "host": "dpg-d3ooeg7diees73c4d8ng-a",
     "dialect": "postgres",
     "dialectOptions": {
