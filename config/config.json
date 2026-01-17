@@ -13,15 +13,17 @@
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
-"production": {
-  "url": "postgresql://pineda:aJVWls1BmbYQPWvIxOnDNSOxTSA7awgI@dpg-d4ucdvmuk2gs738omjag-a.oregon-postgres.render.com/db_api_rest_2s92",
-  "dialect": "postgres",
-  "dialectOptions": {
-    "ssl": {
-      "require": true,
-      "rejectUnauthorized": false
+  "production": {
+    "username": "pine",
+    "password": "1DZSLpIoDcRseXXrGRKiKbe35oTeYbEl",
+    "database": "db_api_rest_za71",
+    "host":"dpg-d5ltcmchg0os73c77t3g-a",
+    "dialect":"postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
     }
   }
-}
-
 }
